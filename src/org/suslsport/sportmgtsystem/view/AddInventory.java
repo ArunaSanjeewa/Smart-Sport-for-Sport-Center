@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import org.suslsport.sportmgtsystem.ThirdPartyFn.OnlyStringAndWhiteSpace;
 import org.suslsport.sportmgtsystem.controller.InventoryController;
 import org.suslsport.sportmgtsystem.model.Inventory;
 
@@ -86,6 +87,11 @@ AddCurrentStock acs =null;
 
         jText_from_whome.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jText_from_whome.setToolTipText("Where this voucher from ");
+        jText_from_whome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jText_from_whomeKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("From Whome                           :");
@@ -242,6 +248,11 @@ AddCurrentStock acs =null;
         checkCharacter(jText_voucher_id);
         
     }//GEN-LAST:event_jText_voucher_idKeyTyped
+
+    private void jText_from_whomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_from_whomeKeyPressed
+        // TODO add your handling code here:
+        OnlyStringAndWhiteSpace.setOnlyStringAndWhiteSpace(jText_from_whome);
+    }//GEN-LAST:event_jText_from_whomeKeyPressed
 
 public static void checkCharacter(JTextField jTextField){
     

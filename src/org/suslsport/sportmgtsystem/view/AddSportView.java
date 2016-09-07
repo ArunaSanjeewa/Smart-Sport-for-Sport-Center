@@ -177,13 +177,15 @@ Main aThis =null;
             }
             
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddSportView.class.getName()).log(Level.SEVERE, null, ex);
+            String message = ex.getMessage();
+                JOptionPane.showMessageDialog(this, message);
         } catch (SQLException ex) {
-            Logger.getLogger(AddSportView.class.getName()).log(Level.SEVERE, null, ex);
+                String message = ex.getMessage();
+                JOptionPane.showMessageDialog(this, message);
         } 
             
         }else{
-            JOptionPane.showMessageDialog(this, "Fill the all fields");
+            JOptionPane.showMessageDialog(this, "You must Fill the Sport Name field");
         }
         
         
