@@ -216,7 +216,7 @@ public class AddItemsView extends javax.swing.JPanel {
             boolean addItemsRes = ItemController.addItems(item);
             if (addItemsRes) {
                 
-                //JOptionPane.showMessageDialog(this, "Item added successfully");
+                JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.INFORMATION_MESSAGE);
                 loadData();
                 jText_ItemName.setText("");
             }else{
@@ -224,9 +224,11 @@ public class AddItemsView extends javax.swing.JPanel {
             }
             
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddItemsView.class.getName()).log(Level.SEVERE, null, ex);
+            String message = ex.getMessage();
+            JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.WARNING_MESSAGE);
         } catch (SQLException ex) {
-            Logger.getLogger(AddItemsView.class.getName()).log(Level.SEVERE, null, ex);
+            String message = ex.getMessage();
+            JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.WARNING_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton_AddItemsActionPerformed
