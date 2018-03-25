@@ -8,6 +8,7 @@ package org.suslsport.sportmgtsystem.ThirdPartyFn;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,15 +18,31 @@ import javax.swing.JPanel;
  * @author RedHunter
  */
 public class ImageTest {
+    public static void setImage(JPanel jp,ImageIcon icon){
+        ImagePanel panel = new ImagePanel(icon.getImage());
+        panel.setSize(1360, 610);
+        
+        jp.add(panel);
+        panel.setVisible(true);
+        
+        
+        
+    
+    }
 
-  public static void main(String[] args) {
-    ImagePanel panel = new ImagePanel(new ImageIcon("G:\\Java Learning\\Smart_Sport\\test\\SmartSportTest\\02.jpg").getImage());
-
-    JFrame frame = new JFrame();
-    frame.getContentPane().add(panel);
-    frame.pack();
-    frame.setVisible(true);
-  }
+//  public static void main(String[] args) {
+//      JPanel jp = new JPanel();
+//      jp.setSize(1360, 610);
+//    ImagePanel panel = new ImagePanel(new ImageIcon("G:\\Java Learning\\Smart_Sport\\test\\SmartSportTest\\02.jpg").getImage());
+//
+//    JFrame frame = new JFrame();
+//    frame.setSize(1360, 610);
+//    frame.add(jp);
+//    
+//    jp.add(panel);
+//    jp.setVisible(true);
+//    frame.setVisible(true);
+//  }
 }
 
 class ImagePanel extends JPanel {

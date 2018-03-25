@@ -105,7 +105,7 @@ Main aThis =null;
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 153, 255));
+        jButton2.setBackground(new java.awt.Color(255, 102, 102));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -233,6 +233,7 @@ Main aThis =null;
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        aThis.addSportView =null;
         aThis.getjPanel_Manage_Sport().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed

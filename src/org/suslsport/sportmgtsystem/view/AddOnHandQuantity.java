@@ -103,6 +103,7 @@ public class AddOnHandQuantity extends javax.swing.JPanel {
         jComboBox_ItemName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jComboBox_ItemName.setToolTipText("Select a name of sport equipments");
 
+        jButton_addOnHandQuantity.setBackground(new java.awt.Color(0, 153, 255));
         jButton_addOnHandQuantity.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_addOnHandQuantity.setText("Add On Hand Quantity");
         jButton_addOnHandQuantity.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -112,6 +113,7 @@ public class AddOnHandQuantity extends javax.swing.JPanel {
             }
         });
 
+        jButton_addOnHandQuantity1.setBackground(new java.awt.Color(255, 102, 102));
         jButton_addOnHandQuantity1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_addOnHandQuantity1.setText("Cancel");
         jButton_addOnHandQuantity1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -235,6 +237,7 @@ public class AddOnHandQuantity extends javax.swing.JPanel {
 
     private void jButton_addOnHandQuantity1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addOnHandQuantity1ActionPerformed
         // TODO add your handling code here:
+        aThis.addOnHandQuantity = null;
 
         aThis.getjPanel_onhandQuantity().setVisible(true);
         this.setVisible(false);

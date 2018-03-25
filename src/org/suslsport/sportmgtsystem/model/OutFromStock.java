@@ -10,27 +10,40 @@ package org.suslsport.sportmgtsystem.model;
  * @author RedHunter
  */
 public class OutFromStock {
-    
+    private int invoiceId;
     private String date;
     private String studentId;
     private String contact;
     private String itemId;
     private int quantity;
     private boolean outType;
-    private String outedBy;
+   
 
     public OutFromStock() {
     }
 
-    public OutFromStock(String date, String studentId, String contact, String itemId, int quantity, boolean outType, String outedBy) {
+    public OutFromStock(int invoiceId, String date, String studentId, String contact, String itemId, int quantity, boolean outType) {
+        this.invoiceId = invoiceId;
         this.date = date;
         this.studentId = studentId;
         this.contact = contact;
         this.itemId = itemId;
         this.quantity = quantity;
         this.outType = outType;
-        this.outedBy = outedBy;
+        
     }
+
+    public OutFromStock(String date, String studentId, String contact, String itemId, int quantity, boolean outType) {
+        this.invoiceId = invoiceId;
+        this.date = date;
+        this.studentId = studentId;
+        this.contact = contact;
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.outType = outType;
+        
+    }
+
 
     /**
      * @return the date
@@ -119,15 +132,19 @@ public class OutFromStock {
     /**
      * @return the outedBy
      */
-    public String getOutedBy() {
-        return outedBy;
+ 
+    /**
+     * @return the invoiceId
+     */
+    public int getInvoiceId() {
+        return invoiceId;
     }
 
     /**
-     * @param outedBy the outedBy to set
+     * @param invoiceId the invoiceId to set
      */
-    public void setOutedBy(String outedBy) {
-        this.outedBy = outedBy;
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
     }
     
     

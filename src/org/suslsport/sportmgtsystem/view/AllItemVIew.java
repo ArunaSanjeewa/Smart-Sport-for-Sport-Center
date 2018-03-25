@@ -28,7 +28,13 @@ Main aThis =null;
         initComponents();
         this.aThis = aThis;
         
+    try {
         printData();
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(AllItemVIew.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(AllItemVIew.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }
 
   
@@ -105,12 +111,13 @@ Main aThis =null;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        aThis.allItemVIew = null;
         aThis.getjPanel_Manage_Sport_Eq().setVisible(true);
          this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-       public void printData(){
-        try {
+       public void printData() throws ClassNotFoundException, SQLException{
+        
             // TODO add your handling code here:
             DefaultTableModel model = (DefaultTableModel) jTable_AllItemView.getModel();
             jTable_AllItemView.setRowHeight(20);
@@ -124,11 +131,7 @@ Main aThis =null;
                 
             }
             
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AllItemVIew.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(AllItemVIew.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

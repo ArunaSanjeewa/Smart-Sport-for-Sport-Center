@@ -28,8 +28,10 @@ import org.suslsport.sportmgtsystem.model.Inventory;
  * @author RedHunter
  */
 public class AddInventory extends javax.swing.JPanel {
-Main aThis = null;
-AddCurrentStock acs =null;
+
+    Main aThis = null;
+    public AddCurrentStock acs = null;
+
     /**
      * Creates new form AddInventory
      */
@@ -41,7 +43,6 @@ AddCurrentStock acs =null;
         jText_date.setText(dateFormat.format(cal.getTime()));
     }
 
-   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,7 +64,7 @@ AddCurrentStock acs =null;
         jButton_Add_Inventory_cancel = new javax.swing.JButton();
 
         jLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel.setText("Add Inventory");
+        jLabel.setText("Add Voucher");
 
         jText_voucher_id.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jText_voucher_id.setToolTipText("Enter a Voucher Number");
@@ -98,7 +99,7 @@ AddCurrentStock acs =null;
 
         jButton_Add_Inventory.setBackground(new java.awt.Color(0, 153, 255));
         jButton_Add_Inventory.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton_Add_Inventory.setText("Add Inventory");
+        jButton_Add_Inventory.setText("Add Voucher");
         jButton_Add_Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_Add_Inventory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +110,7 @@ AddCurrentStock acs =null;
         jLabel_errorMessage.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel_errorMessage.setForeground(new java.awt.Color(255, 0, 0));
 
-        jButton_Add_Inventory_cancel.setBackground(new java.awt.Color(0, 153, 255));
+        jButton_Add_Inventory_cancel.setBackground(new java.awt.Color(255, 102, 102));
         jButton_Add_Inventory_cancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_Add_Inventory_cancel.setText("Cancel");
         jButton_Add_Inventory_cancel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -185,56 +186,62 @@ AddCurrentStock acs =null;
 
     private void jButton_Add_InventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Add_InventoryActionPerformed
         // TODO add your handling code here:
+        Inventory inventory = null;
+
         String vId = jText_voucher_id.getText();
-        String date =jText_date.getText();
-        String fWhom =jText_from_whome.getText();
-        Inventory  inventory =new Inventory(vId, date, fWhom);
-        
-        if (!vId.equals("")&& !date.equals("")&&!fWhom.equals("")) {
-               try {
-            boolean addInventory = InventoryController.addInventory(inventory);
-                   if (addInventory) {
-                       jText_voucher_id.setText("");
-                       jText_from_whome.setText("");
-                       if (acs == null) {
-                           acs = new AddCurrentStock(aThis);
-                           aThis.getjPanel_center().add(acs);
-                           acs.setSize(1360, 595);         
-                           acs.setVisible(true);
-                           this.setVisible(false);
-                           
-                       }else{
-                           aThis.getjPanel_center().add(acs);
-                           acs.setSize(1360, 595);         
-                           acs.setVisible(true);
-                           this.setVisible(false);
-                       
-                       }
-                       //JOptionPane.showMessageDialog(this, "Voucher is successfully added");
-            }else{
-                JOptionPane.showMessageDialog(this, "Error in adding voucher");
+        String date = jText_date.getText();
+        String fWhom = jText_from_whome.getText();
+        inventory = new Inventory(vId, date, fWhom);
+
+        if (!vId.equals("") && !date.equals("") && !fWhom.equals("")) {
+            try {
+                boolean addInventory = InventoryController.addInventory(inventory);
+
+                if (addInventory) {
+               
+                    aThis.addInventory = null;
+                    if (acs == null) {
+                        
+                        acs = new AddCurrentStock(aThis, this,vId);
+
+                        
+                        aThis.getjPanel_center().add(acs);
+                        acs.setSize(1360, 610);
+                        acs.setVisible(true);
+                        this.setVisible(false);
+
+                    } else {
+
+                        aThis.getjPanel_center().add(acs);
+                        acs.setSize(1360, 595);
+                        acs.setVisible(true);
+                        this.setVisible(false);
+
+                    }
+                    //JOptionPane.showMessageDialog(this, "Voucher is successfully added");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error in adding voucher");
+                }
+            } catch (ClassNotFoundException ex) {
+                String message = ex.getMessage();
+                JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
+            } catch (SQLException ex) {
+                String message = ex.getMessage();
+                JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
             }
-        } catch (ClassNotFoundException ex) {
-            //Logger.getLogger(AddInventory.class.getName()).log(Level.SEVERE, null, ex);
-                   System.out.println("Error 1");
-        } catch (SQLException ex) {
-            //Logger.getLogger(AddInventory.class.getName()).log(Level.SEVERE, null, ex);
-                   JOptionPane.showMessageDialog(this, "Incorrect Data");
-        }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Please fill the all fields");
         }
-        
-        
 
-    
+
     }//GEN-LAST:event_jButton_Add_InventoryActionPerformed
 
     private void jButton_Add_Inventory_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Add_Inventory_cancelActionPerformed
         // TODO add your handling code here:
+        aThis.addInventory = null;
         aThis.getjPanel_Manage_Inventory().setVisible(true);
         this.setVisible(false);
-        
+
     }//GEN-LAST:event_jButton_Add_Inventory_cancelActionPerformed
 
     private void jText_voucher_idKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_voucher_idKeyPressed
@@ -246,7 +253,7 @@ AddCurrentStock acs =null;
     private void jText_voucher_idKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_voucher_idKeyTyped
         // TODO add your handling code here:
         checkCharacter(jText_voucher_id);
-        
+
     }//GEN-LAST:event_jText_voucher_idKeyTyped
 
     private void jText_from_whomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_from_whomeKeyPressed
@@ -254,29 +261,31 @@ AddCurrentStock acs =null;
         OnlyStringAndWhiteSpace.setOnlyStringAndWhiteSpace(jText_from_whome);
     }//GEN-LAST:event_jText_from_whomeKeyPressed
 
-public static void checkCharacter(JTextField jTextField){
-    
-jTextField.addKeyListener(new KeyAdapter() {
-    public void keyTyped(KeyEvent e) { 
-        if (jTextField.getText().length() >= 4 ) // limit textfield to 3 characters
-            e.consume(); 
-    }  
-});
-         }
+    public static void checkCharacter(JTextField jTextField) {
 
-  public static void setNumericOnly(JTextField jTextField){
-    jTextField.addKeyListener(new KeyAdapter() {
-         public void keyTyped(KeyEvent e) {
-           char c = e.getKeyChar();
-           
-           if ((!Character.isDigit(c) ||
-              (c == KeyEvent.VK_BACK_SPACE) ||
-              (c == KeyEvent.VK_DELETE))) {
-                e.consume();
-              }
-         }
-    });
-} 
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (jTextField.getText().length() >= 4) // limit textfield to 3 characters
+                {
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    public static void setNumericOnly(JTextField jTextField) {
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+
+                if ((!Character.isDigit(c)
+                        || (c == KeyEvent.VK_BACK_SPACE)
+                        || (c == KeyEvent.VK_DELETE))) {
+                    e.consume();
+                }
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Add_Inventory;
     private javax.swing.JButton jButton_Add_Inventory_cancel;

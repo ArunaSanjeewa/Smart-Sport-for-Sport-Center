@@ -5,17 +5,41 @@
  */
 package org.suslsport.sportmgtsystem.view;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import org.suslsport.sportmgtsystem.controller.OutFromStockController;
+
 /**
  *
  * @author RedHunter
  */
 public class Receive extends javax.swing.JFrame {
 
+    String invoiceid = null;
+    String quantity = null;
+    int invoiceIdint = 0;
+
     /**
      * Creates new form Receive
      */
-    public Receive() {
+    public Receive(Object id, String toString) {
         initComponents();
+        this.invoiceid = id.toString();
+        invoiceIdint = Integer.parseInt(invoiceid);
+        this.quantity = toString;
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        jTextField_Issued_q.setText(toString);
+        jText_received.setText(toString);
+
+    }
+
+    private Receive() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -29,22 +53,49 @@ public class Receive extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextField_Issued_q = new javax.swing.JTextField();
         jText_received = new javax.swing.JTextField();
         jButton_received = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Quantities Issued :");
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Received Quantity :");
 
-        jTextField1.setEnabled(false);
+        jTextField_Issued_q.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextField_Issued_q.setEnabled(false);
 
+        jText_received.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jText_received.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jText_receivedKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jText_receivedKeyTyped(evt);
+            }
+        });
+
+        jButton_received.setBackground(new java.awt.Color(0, 153, 255));
+        jButton_received.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_received.setText("Received");
+        jButton_received.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_receivedActionPerformed(evt);
+            }
+        });
 
+        jButton2.setBackground(new java.awt.Color(255, 102, 102));
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Cancel");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -52,20 +103,20 @@ public class Receive extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton_received, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                        .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jText_received, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))))
-                .addContainerGap(124, Short.MAX_VALUE))
+                            .addComponent(jTextField_Issued_q)
+                            .addComponent(jText_received, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton_received, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,21 +124,101 @@ public class Receive extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField_Issued_q, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jText_received, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_received)
-                    .addComponent(jButton2))
-                .addContainerGap(257, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_received, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(45, 45, 45))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton_receivedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_receivedActionPerformed
+        // TODO add your handling code here:
+        String qIssued = jTextField_Issued_q.getText();
+        String qRec = jText_received.getText();
+        if ((Integer.parseInt(qIssued) >= Integer.parseInt(qRec))) {
+            if ((Integer.parseInt(qIssued) == Integer.parseInt(qRec))) {
+                try {
+                    boolean deleteRow = OutFromStockController.deleteRow(invoiceIdint);
+                    if (deleteRow) {
+                        this.setVisible(false);
+                        JOptionPane.showMessageDialog(null, "Succesfully removed invoice");
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(NeedToReturnInvoices.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(NeedToReturnInvoices.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+
+                try {
+                    int restQ = Integer.parseInt(qIssued) - Integer.parseInt(qRec);
+                    boolean updateRow = OutFromStockController.updateRow(restQ, invoiceIdint);
+
+                    if (updateRow) {
+                        this.setVisible(false);
+                        
+                        JOptionPane.showMessageDialog(null, "Succesfully updated");
+                        
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(NeedToReturnInvoices.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(NeedToReturnInvoices.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Cann't proceed check again");
+        }
+
+    }//GEN-LAST:event_jButton_receivedActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jText_receivedKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_receivedKeyPressed
+        // TODO add your handling code here:
+        setNumericOnly(jText_received);
+    }//GEN-LAST:event_jText_receivedKeyPressed
+
+    private void jText_receivedKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_receivedKeyTyped
+        // TODO add your handling code here:
+        checkCharacter(jText_received);
+        
+    }//GEN-LAST:event_jText_receivedKeyTyped
+    public static void setNumericOnly(JTextField jTextField) {
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+
+                if ((!Character.isDigit(c)
+                        || (c == KeyEvent.VK_BACK_SPACE)
+                        || (c == KeyEvent.VK_DELETE))) {
+                    e.consume();
+                }
+            }
+        });
+    }
+        public static void checkCharacter(JTextField jTextField) {
+
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (jTextField.getText().length() >= 2) // limit textfield to 3 characters
+                {
+                    e.consume();
+                }
+            }
+        });
+    }
     /**
      * @param args the command line arguments
      */
@@ -128,7 +259,21 @@ public class Receive extends javax.swing.JFrame {
     private javax.swing.JButton jButton_received;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField_Issued_q;
     private javax.swing.JTextField jText_received;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the jTextField_Issued_q
+     */
+    public javax.swing.JTextField getjTextField_Issued_q() {
+        return jTextField_Issued_q;
+    }
+
+    /**
+     * @return the jText_received
+     */
+    public javax.swing.JTextField getjText_received() {
+        return jText_received;
+    }
 }

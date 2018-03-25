@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.suslsport.sportmgtsystem.ThirdPartyFn.ComboSearch;
 import org.suslsport.sportmgtsystem.controller.ItemController;
@@ -127,7 +128,8 @@ public class AllOnHandViewAccordingToSports extends javax.swing.JPanel {
 
     private void jComboBox_AllSportNamesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_AllSportNamesActionPerformed
         // TODO add your handling code here:
-        String relevantSportId = null;
+     if(jComboBox_AllSportNames.getSelectedIndex() > 0){
+            String relevantSportId = null;
         DefaultTableModel dtm = (DefaultTableModel) jTable_ViewItemsAccordingToSports.getModel();
         dtm.setRowCount(0);
         String sName = (String) jComboBox_AllSportNames.getSelectedItem();
@@ -150,6 +152,9 @@ public class AllOnHandViewAccordingToSports extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(AllOnHandViewAccordingToSports.class.getName()).log(Level.SEVERE, null, ex);
         }
+     }else{
+//         JOptionPane.showMessageDialog(null,"You must selsect a Sport","Warning",JOptionPane.WARNING_MESSAGE);
+     }
        
     }//GEN-LAST:event_jComboBox_AllSportNamesActionPerformed
 

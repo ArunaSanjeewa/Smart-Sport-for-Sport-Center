@@ -5,21 +5,30 @@
  */
 package org.suslsport.sportmgtsystem.view;
 
+import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import org.suslsport.sportmgtsystem.ThirdPartyFn.ComboSearch;
 import org.suslsport.sportmgtsystem.controller.ItemController;
 import org.suslsport.sportmgtsystem.controller.OnHandQuantityContrller;
 import org.suslsport.sportmgtsystem.controller.OutFromStockController;
 import org.suslsport.sportmgtsystem.controller.SystemUserController;
+import org.suslsport.sportmgtsystem.model.ItemNameAndQuantity;
 import org.suslsport.sportmgtsystem.model.OnHandQuantity;
 import org.suslsport.sportmgtsystem.model.OutFromStock;
 import org.suslsport.sportmgtsystem.model.SystemUsers;
@@ -29,33 +38,27 @@ import org.suslsport.sportmgtsystem.model.SystemUsers;
  * @author RedHunter
  */
 public class OutFromStockView extends javax.swing.JPanel {
-    int selectedRow ;
-    Main aThis=null;
-    
+
+    private String itemName;
+    private int outQuantiy;
+    HashMap itemmap = new HashMap();
+
+    int selectedRow;
+    Main aThis = null;
+
     /**
      * Creates new form OutFromStock
      */
-    public OutFromStockView(Main aThis){
+    public OutFromStockView(Main aThis) {
         initComponents();
         this.aThis = aThis;
-        
-        
+
         getDate();
+        jTextField_reg_no.setText("ex:12/AS/CI/041");
         addItemToCombo();
         
-        try {
-            addUserNameToCombo();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+
     }
-
-   
-
-  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,16 +72,16 @@ public class OutFromStockView extends javax.swing.JPanel {
         jDialog1 = new javax.swing.JDialog();
         jButton_yes_Confirm = new javax.swing.JButton();
         jButton_cancel = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable_ConfirmTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jTextField_date = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField_Available_q = new javax.swing.JTextField();
         jComboBox_Item_Name = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jTextField_out_quantity = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -90,13 +93,12 @@ public class OutFromStockView extends javax.swing.JPanel {
         jButton2 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jCheckBox_return_type = new javax.swing.JCheckBox();
-        jLabel9 = new javax.swing.JLabel();
-        jComboBox_select_Outed_by = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
         jButton3 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        jLabel_available_q = new javax.swing.JLabel();
 
+        jButton_yes_Confirm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_yes_Confirm.setText("Yes,Out this list and FINISH");
         jButton_yes_Confirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,81 +106,111 @@ public class OutFromStockView extends javax.swing.JPanel {
             }
         });
 
+        jButton_cancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_cancel.setText("Cancel");
+        jButton_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_cancelActionPerformed(evt);
+            }
+        });
+
+        jTable_ConfirmTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Item Name", "Quantity"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable_ConfirmTable);
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
         jDialog1Layout.setHorizontalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialog1Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(jButton_yes_Confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
+                        .addComponent(jButton_yes_Confirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jDialog1Layout.setVerticalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
-                .addContainerGap(244, Short.MAX_VALUE)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_yes_Confirm)
-                    .addComponent(jButton_cancel))
-                .addGap(36, 36, 36))
+                    .addComponent(jButton_yes_Confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_cancel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
         );
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel1.setText("Date :");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
 
         jTextField_date.setEditable(false);
-        add(jTextField_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 180, 30));
+        jTextField_date.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField_dateActionPerformed(evt);
+            }
+        });
+        add(jTextField_date, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, 330, 30));
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel2.setText("Student Registation No :");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, -1, -1));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel3.setText("Item Name   :");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, -1, -1));
 
-        jTextField_Available_q.setEditable(false);
-        jTextField_Available_q.setFont(new java.awt.Font("Microsoft YaHei", 0, 18)); // NOI18N
-        jTextField_Available_q.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField_Available_q.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField_Available_qActionPerformed(evt);
+        jComboBox_Item_Name.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox_Item_NameItemStateChanged(evt);
             }
         });
-        add(jTextField_Available_q, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 120, 120, 100));
-
-        jComboBox_Item_Name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_Item_NameActionPerformed(evt);
-            }
-        });
-        add(jComboBox_Item_Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 440, 30));
+        add(jComboBox_Item_Name, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 160, 330, 30));
 
         jLabel4.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel4.setText("Available Quantity :");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 100, 140, 20));
-        add(jTextField_out_quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 440, 30));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 140, 20));
+
+        jTextField_out_quantity.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTextField_out_quantityMousePressed(evt);
+            }
+        });
+        jTextField_out_quantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_out_quantityKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField_out_quantityKeyTyped(evt);
+            }
+        });
+        add(jTextField_out_quantity, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 220, 330, 30));
 
         jLabel5.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel5.setText("Out quantity :");
-        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, -1, -1));
-        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 1330, 10));
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 14)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(0, 153, 255));
+        jButton1.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         jButton1.setText("Add to List");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 590, 40));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 220, 100, 30));
 
         jTable_item_list.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jTable_item_list.setModel(new javax.swing.table.DefaultTableModel(
@@ -204,18 +236,19 @@ public class OutFromStockView extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 120, 520, 200));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 380, 170));
 
         jButton_del.setText("Delete");
         jButton_del.addActionListener(new java.awt.event.ActionListener() {
@@ -223,167 +256,210 @@ public class OutFromStockView extends javax.swing.JPanel {
                 jButton_delActionPerformed(evt);
             }
         });
-        add(jButton_del, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 120, 70, 50));
+        add(jButton_del, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 290, 70, 40));
 
         jTextField_contact.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-        add(jTextField_contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 30, 181, 30));
+        jTextField_contact.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField_contactKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField_contactKeyTyped(evt);
+            }
+        });
+        add(jTextField_contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 330, 30));
 
         jLabel10.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel10.setText("Contact No :");
-        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, -1, -1));
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
 
         jTextField_reg_no.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
-        add(jTextField_reg_no, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, 181, 30));
+        jTextField_reg_no.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField_reg_noMouseClicked(evt);
+            }
+        });
+        add(jTextField_reg_no, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, 330, 30));
 
         jButton2.setBackground(new java.awt.Color(0, 153, 255));
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setText("Out From Stock");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 520, 730, 50));
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 540, 350, 50));
 
         jLabel8.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel8.setText("Return Type :");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, 90, 20));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 490, 90, 20));
 
         jCheckBox_return_type.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jCheckBox_return_type.setSelected(true);
         jCheckBox_return_type.setText("Need Return");
-        add(jCheckBox_return_type, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, -1, -1));
-
-        jLabel9.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
-        jLabel9.setText("Outed By :");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 440, -1, -1));
-
-        add(jComboBox_select_Outed_by, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, 430, 30));
+        add(jCheckBox_return_type, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 490, -1, -1));
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 10, 620));
-        add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 1330, 20));
 
         jButton3.setBackground(new java.awt.Color(255, 102, 102));
-        jButton3.setFont(new java.awt.Font("Microsoft YaHei", 1, 24)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton3.setText("Cancel");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
-        add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 520, 480, 50));
+        add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 540, 150, 50));
 
         jLabel6.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
-        jLabel6.setText("Out Items :");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 100, -1, -1));
-    }// </editor-fold>//GEN-END:initComponents
-    
-    private void jComboBox_Item_NameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_Item_NameActionPerformed
-        // TODO add your handling code here:
-        String itemName = jComboBox_Item_Name.getSelectedItem().toString();
-        try {
-            String relevantItemId = ItemController.getRelevantItemId(itemName);
-            int relevantQuantity = OnHandQuantityContrller.getRelevantQuantity(relevantItemId);
-            String sRelevantQuantity = Integer.toString(relevantQuantity);
-            jTextField_Available_q.setText(sRelevantQuantity);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-    }//GEN-LAST:event_jComboBox_Item_NameActionPerformed
+        jLabel6.setText("Issu equipment list :");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, -1, -1));
 
-    private void jTextField_Available_qActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_Available_qActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField_Available_qActionPerformed
+        jLabel_available_q.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel_available_q.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel_available_q.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        add(jLabel_available_q, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 150, 60, 40));
+    }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String itemName = jComboBox_Item_Name.getSelectedItem().toString();
-        
-        String outQuantiy =jTextField_out_quantity.getText();
-        DefaultTableModel dtm = (DefaultTableModel) jTable_item_list.getModel();
-        Object[] itemx = {itemName,outQuantiy};
-        dtm.addRow(itemx);
-        jTextField_out_quantity.setText(null);
-        jTextField_Available_q.setText(null);
-        jComboBox_Item_Name.setSelectedIndex(0);
-        
-        
-        
-        
+        int selectedIndex = jComboBox_Item_Name.getSelectedIndex();
+        String selectedItem = (String) jComboBox_Item_Name.getSelectedItem();
+
+        String regNo = jTextField_reg_no.getText();
+        String contact = jTextField_contact.getText();
+
+        if (!regNo.equals("") && !contact.equals("")) {
+
+            if (selectedIndex > 0) {
+                String itemName = jComboBox_Item_Name.getSelectedItem().toString();
+
+                if (!jTextField_out_quantity.getText().equals("")) {
+
+                    int availableQ = Integer.parseInt(jLabel_available_q.getText());
+                    String outQuantiy = jTextField_out_quantity.getText();
+                    int outQ = Integer.parseInt(outQuantiy);
+                    if (outQ > 0) {
+                        if (availableQ >= outQ) {
+                            DefaultTableModel dtm = (DefaultTableModel) getjTable_item_list().getModel();
+                            Object[] itemx = {itemName, outQuantiy};
+                            dtm.addRow(itemx);
+                            int newQ = availableQ - outQ;
+                            System.out.println(newQ);
+                            ItemNameAndQuantity get = (ItemNameAndQuantity) itemmap.get(selectedItem);
+
+                            get.setQuantity(get.getQuantity() - outQ);
+                            itemmap.remove(selectedItem);
+                            itemmap.put(selectedItem, get);
+
+                            jTextField_out_quantity.setText(null);
+                            jComboBox_Item_Name.setSelectedIndex(0);
+                            jLabel_available_q.setText("");
+
+                        } else {
+                            JOptionPane.showMessageDialog(null, "'" + outQ + "''" + itemName + "' not available in the stock", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "You can't issue'" + outQ + "' from '" + itemName + "'", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+
+                } else {
+                    jTextField_out_quantity.setForeground(Color.red);
+                    jTextField_out_quantity.setText("*You must enter an quantity");
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "You must select a equipment name", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "You must fill the 'Registaion no' and 'Contact no'", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTable_item_listMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_item_listMouseReleased
-       
-        
+
+
     }//GEN-LAST:event_jTable_item_listMouseReleased
 
     private void jTable_item_listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_item_listMouseClicked
         // TODO add your handling code here:
-        selectedRow = jTable_item_list.getSelectedRow();
-        
+        selectedRow = getjTable_item_list().getSelectedRow();
+
     }//GEN-LAST:event_jTable_item_listMouseClicked
 
     private void jButton_delActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_delActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model=(DefaultTableModel) jTable_item_list.getModel();
+        DefaultTableModel model = (DefaultTableModel) getjTable_item_list().getModel();
         model.removeRow(selectedRow);
     }//GEN-LAST:event_jButton_delActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
-        jDialog1.setSize(500, 300);
-        jDialog1.add(jPanel1);
-        jPanel1.setLocation(50, 50);
-        jDialog1.pack();
-        jDialog1.setVisible(true);
-        jDialog1.setLocation(50, 50);
+        int rowCount = getjTable_item_list().getRowCount();
+        //System.out.println(rowCount);
+
+        if (rowCount > 0) {
+            TableModel model = jTable_item_list.getModel();
+            jTable_ConfirmTable.setModel(model);
+            jDialog1.setSize(492, 396);
+            jDialog1.setLocationRelativeTo(this);
+            jDialog1.setVisible(true);
+            
+
+            }else {
+            JOptionPane.showMessageDialog(null, "You must add equipments");
+
+        }
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton_yes_ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_yes_ConfirmActionPerformed
         // TODO add your handling code here:
-        
+
         String d = jTextField_date.getText();
         String stId = jTextField_reg_no.getText();
-        String contactNo =jTextField_contact.getText();
-        String itemName ;
-       
-        
-        DefaultTableModel model = (DefaultTableModel) jTable_item_list.getModel();
+        String contactNo = jTextField_contact.getText();
+        String itemName;
+
+        DefaultTableModel model = (DefaultTableModel) getjTable_item_list().getModel();
         int rowCount = model.getRowCount();
         ArrayList<OnHandQuantity> al = new ArrayList<>();
-        OnHandQuantity handQuantity ;
+        OnHandQuantity handQuantity;
         for (int i = 0; i < rowCount; i++) {
-            
-            
+
             try {
-                itemName = model.getValueAt(i,0).toString();
+                itemName = model.getValueAt(i, 0).toString();
                 String relevantItemId = ItemController.getRelevantItemId(itemName);
                 //System.out.println(itemName);
-                String quantity = model.getValueAt(i,1).toString();
-                
-                handQuantity =new OnHandQuantity(relevantItemId, Integer.parseInt(quantity));
+                String quantity = model.getValueAt(i, 1).toString();
+
+                handQuantity = new OnHandQuantity(relevantItemId, Integer.parseInt(quantity));
                 OnHandQuantityContrller.updateRowOuting(handQuantity);
-                
-                
-                
+
                 boolean selectedReturn = jCheckBox_return_type.isSelected();
-                System.out.println(selectedReturn);
-                
-                String outedBy = jComboBox_select_Outed_by.getSelectedItem().toString();
-                OutFromStock fromStock = new OutFromStock(d,stId,contactNo,relevantItemId,Integer.parseInt(quantity),selectedReturn,outedBy);
-                
+//                System.out.println(selectedReturn);
+
+                OutFromStock fromStock = new OutFromStock(d, stId, contactNo, relevantItemId, Integer.parseInt(quantity), selectedReturn);
+
                 boolean add = OutFromStockController.add(fromStock);
                 if (add) {
-                   // jDialog1.setVisible(false);
+                    // jDialog1.setVisible(false);
                     JOptionPane.showMessageDialog(jButton1, "Successfull");
-                }else{
+                    jDialog1.setVisible(false);
+                    DefaultTableModel  dtm = (DefaultTableModel) jTable_item_list.getModel();
+            dtm.setRowCount(0);
+                    
+                    jTextField_reg_no.setText("ex:12/AS/CI/041");
+                    jTextField_contact.setText("");
+                    
+                    
+                } else {
                     JOptionPane.showMessageDialog(jButton1, "Fail");
                 }
             } catch (ClassNotFoundException ex) {
@@ -391,61 +467,151 @@ public class OutFromStockView extends javax.swing.JPanel {
             } catch (SQLException ex) {
                 Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
-        
-        
-        
-       
-        
+
+
     }//GEN-LAST:event_jButton_yes_ConfirmActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      //jPanel_center.setVisible(true);
-      aThis.getjPanel_mainButton().setVisible(true);
-      this.setVisible(false);
-     
-        
-                
-        
+        //jPanel_center.setVisible(true);
+        aThis.outFromStockView = null;
+        aThis.getjPanel_mainButton().setVisible(true);
+        this.setVisible(false);
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public void getDate(){
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    private void jTextField_contactKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_contactKeyPressed
+        // TODO add your handling code here:
+        setNumericOnly(jTextField_contact);
+
+
+    }//GEN-LAST:event_jTextField_contactKeyPressed
+
+    private void jTextField_contactKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_contactKeyTyped
+        // TODO add your handling code here:
+        checkCharacter(jTextField_contact, 10);
+    }//GEN-LAST:event_jTextField_contactKeyTyped
+
+    private void jTextField_out_quantityKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_out_quantityKeyPressed
+        // TODO add your handling code here:
+        setNumericOnly(jTextField_out_quantity);
+    }//GEN-LAST:event_jTextField_out_quantityKeyPressed
+
+    private void jTextField_out_quantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_out_quantityKeyTyped
+        // TODO add your handling code here:
+        checkCharacter(jTextField_out_quantity, 2);
+    }//GEN-LAST:event_jTextField_out_quantityKeyTyped
+
+    private void jTextField_out_quantityMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField_out_quantityMousePressed
+        // TODO add your handling code here:
+        jTextField_out_quantity.setForeground(Color.black);
+        jTextField_out_quantity.setText("");
+    }//GEN-LAST:event_jTextField_out_quantityMousePressed
+
+    private void jButton_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cancelActionPerformed
+        // TODO add your handling code here:
+        jDialog1.setVisible(false);
+    }//GEN-LAST:event_jButton_cancelActionPerformed
+
+    private void jComboBox_Item_NameItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_Item_NameItemStateChanged
+        try {
+            ItemNameAndQuantity get = (ItemNameAndQuantity) itemmap.get(jComboBox_Item_Name.getSelectedItem());
+
+            int quantity = get.getQuantity();
+
+            jLabel_available_q.setText("" + quantity);
+
+            //System.out.println(get.getQuantity());
+        } catch (java.lang.NullPointerException e) {
+
+        }
+
+    }//GEN-LAST:event_jComboBox_Item_NameItemStateChanged
+
+    private void jTextField_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_dateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField_dateActionPerformed
+
+    private void jTextField_reg_noMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField_reg_noMouseClicked
+        // TODO add your handling code here:
+        jTextField_reg_no.setText("");
+    }//GEN-LAST:event_jTextField_reg_noMouseClicked
+
+    public static void checkCharacter(JTextField jTextField, int i) {
+
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (jTextField.getText().length() >= i) // limit textfield to 3 characters
+                {
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    public static void setNumericOnly(JTextField jTextField) {
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+
+                if ((!Character.isDigit(c)
+                        || (c == KeyEvent.VK_BACK_SPACE)
+                        || (c == KeyEvent.VK_DELETE))) {
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    public void getDate() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Calendar cal = Calendar.getInstance();
         jTextField_date.setText(dateFormat.format(cal.getTime()));
-}
-    public void addUserNameToCombo() throws ClassNotFoundException, SQLException{
-        ComboSearch comboS = new ComboSearch();
-        comboS.setSearchableCombo(jComboBox_select_Outed_by, true, TOOL_TIP_TEXT_KEY);
-        ArrayList<SystemUsers> all = SystemUserController.getAll();
-        
-        for (SystemUsers systemUsers : all) {
-            jComboBox_select_Outed_by.addItem(systemUsers.getFullName());
-        }
-        
     }
-    public void addItemToCombo(){
-    ComboSearch comboSearch = new ComboSearch();
+
+    public void addItemToCombo() {
+        ComboSearch comboSearch = new ComboSearch();
+
+        jComboBox_Item_Name.addItem("Select equipment name");
+
         try {
-            ArrayList<OnHandQuantity> viewAllItems = OnHandQuantityContrller.viewAllItems();
-            
-            //jComboBox_Item_Name.addItem("Select Item");
-            for (OnHandQuantity viewAllItem : viewAllItems) {
-                String releventItemName = ItemController.getReleventItemName(viewAllItem.getItemId());
-                jComboBox_Item_Name.addItem(releventItemName);
-                
+            ArrayList<ItemNameAndQuantity> viewAllItemsWithName = OnHandQuantityContrller.viewAllItemsWithName();
+
+            for (ItemNameAndQuantity andQuantity : viewAllItemsWithName) {
+
+                jComboBox_Item_Name.addItem(andQuantity.getItemName());
+                itemmap.put(andQuantity.getItemName(), andQuantity);
+
             }
-             comboSearch.setSearchableCombo(jComboBox_Item_Name, true, TOOL_TIP_TEXT_KEY);
         } catch (SQLException ex) {
             Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-       
-        
-}
+        comboSearch.setSearchableCombo(jComboBox_Item_Name, true, TOOL_TIP_TEXT_KEY);
+
+//        try {
+//            ArrayList<OnHandQuantity> viewAllItems = OnHandQuantityContrller.viewAllItems();
+//            jComboBox_Item_Name.removeAllItems();
+//
+//            jComboBox_Item_Name.addItem("Select equipment name");
+//            HashMap hashMap = new HashMap();
+//            
+//            for (OnHandQuantity viewAllItem : viewAllItems) {
+//                
+//                String releventItemName = ItemController.getReleventItemName(viewAllItem.getItemId());
+//                jComboBox_Item_Name.addItem(releventItemName);
+//
+//            }
+//            comboSearch.setSearchableCombo(jComboBox_Item_Name, true, TOOL_TIP_TEXT_KEY);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(OutFromStockView.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -456,7 +622,6 @@ public class OutFromStockView extends javax.swing.JPanel {
     private javax.swing.JButton jButton_yes_Confirm;
     private javax.swing.JCheckBox jCheckBox_return_type;
     private javax.swing.JComboBox<String> jComboBox_Item_Name;
-    private javax.swing.JComboBox<String> jComboBox_select_Outed_by;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -466,17 +631,44 @@ public class OutFromStockView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel_available_q;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTable jTable_ConfirmTable;
     private javax.swing.JTable jTable_item_list;
-    private javax.swing.JTextField jTextField_Available_q;
     private javax.swing.JTextField jTextField_contact;
     private javax.swing.JTextField jTextField_date;
     private javax.swing.JTextField jTextField_out_quantity;
     private javax.swing.JTextField jTextField_reg_no;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the jTable_ConfirmTable
+     */
+    public javax.swing.JTable getjTable_ConfirmTable() {
+        return jTable_ConfirmTable;
+    }
+
+    /**
+     * @return the jTable_item_list
+     */
+    public javax.swing.JTable getjTable_item_list() {
+        return jTable_item_list;
+    }
+
+    /**
+     * @return the itemName
+     */
+    public String getItemName() {
+        return itemName;
+    }
+
+    /**
+     * @return the outQuantiy
+     */
+    public int getOutQuantiy() {
+        return outQuantiy;
+    }
 }

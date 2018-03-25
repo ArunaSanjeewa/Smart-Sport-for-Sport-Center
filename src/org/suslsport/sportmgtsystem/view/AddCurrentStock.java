@@ -5,6 +5,8 @@
  */
 package org.suslsport.sportmgtsystem.view;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import org.suslsport.sportmgtsystem.ThirdPartyFn.ComboSearch;
 import org.suslsport.sportmgtsystem.controller.CurrentStockContrller;
 import org.suslsport.sportmgtsystem.controller.InventoryController;
@@ -26,58 +29,58 @@ import sun.java2d.pipe.DrawImage;
  * @author RedHunter
  */
 public class AddCurrentStock extends javax.swing.JPanel {
+
     Main aThis = null;
 
     /**
      * Creates new form AddCurrentStock
      */
-     String stockId=null;
-     int quan=0;
-     int newQuantity =0;
-    public AddCurrentStock(Main aThis) {
+    String stockId = null;
+    int quan = 0;
+    int newQuantity = 0;
+    AddInventory addInventory = null;
+    private String vId = null;
+
+    AddCurrentStock(Main aThis, AddInventory addInventory, String vId) {
+
+        initComponents();
+        this.vId = vId;
+        this.aThis = aThis;
+        this.addInventory = addInventory;
+        ComboSearch comboSearch = new ComboSearch();
+
+        jCombo_Voucher_id.addItem(vId);
+
+        comboSearch.setSearchableCombo(jCombo_Voucher_id, true, "");
         try {
-            initComponents();
-            this.aThis = aThis;
-            
-            
-            
-            
-            ComboSearch comboSearch = new ComboSearch();
-            
-            
-            ArrayList<String> allVoucherId = InventoryController.getAllVoucherId();
-            jCombo_Voucher_id.addItem("Select Voucher");
-            jComboBox_ItemName.addItem("Select Item Name");
-            for (String string : allVoucherId) {
-                jCombo_Voucher_id.addItem(string);
-            }
-         
-            
-            comboSearch.setSearchableCombo(jCombo_Voucher_id, true, "");
             loadDataToItem();
-           
-            
-            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
     }
 
-    
-public void loadDataToItem() throws ClassNotFoundException, SQLException{
-    ComboSearch comboSearch1 = new ComboSearch();
-    jComboBox_ItemName.removeAllItems();
-    ArrayList<String> allItemName = ItemController.getAllItemName();
-            for (String string : allItemName) {
-                jComboBox_ItemName.addItem(string);
-                
-            }
-     comboSearch1.setSearchableCombo(jComboBox_ItemName, true, "");
-}
+    public void loadVoucherId() throws ClassNotFoundException, SQLException {
+        ArrayList<String> allVoucherId = InventoryController.getAllVoucherId();
+        for (String string : allVoucherId) {
+            jCombo_Voucher_id.addItem(string);
+        }
+    }
+
+    public void loadDataToItem() throws ClassNotFoundException, SQLException {
+        ComboSearch comboSearch1 = new ComboSearch();
+        jComboBox_ItemName.removeAllItems();
+        jComboBox_ItemName.addItem("Select an equipment name");
+        ArrayList<String> allItemName = ItemController.getAllItemName();
+        for (String string : allItemName) {
+            jComboBox_ItemName.addItem(string);
+
+        }
+        comboSearch1.setSearchableCombo(jComboBox_ItemName, true, "");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,6 +107,20 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
         jLabel3.setText("Item Name                              :");
 
         jText_quantity.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jText_quantity.setToolTipText("Enter an quantity");
+        jText_quantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jText_quantityActionPerformed(evt);
+            }
+        });
+        jText_quantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jText_quantityKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jText_quantityKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel5.setText("Quantity                                 :");
@@ -111,6 +128,7 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
         jButton_Add_Inventory.setBackground(new java.awt.Color(0, 153, 255));
         jButton_Add_Inventory.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton_Add_Inventory.setText("Add Stock");
+        jButton_Add_Inventory.setToolTipText("Add this equipment to relevant voucher");
         jButton_Add_Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_Add_Inventory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,6 +137,7 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
         });
 
         jCombo_Voucher_id.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jCombo_Voucher_id.setToolTipText("Voucher Id");
         jCombo_Voucher_id.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jCombo_Voucher_idFocusLost(evt);
@@ -131,6 +150,7 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
         });
 
         jComboBox_ItemName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jComboBox_ItemName.setToolTipText("Select an equipment name");
         jComboBox_ItemName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox_ItemNameActionPerformed(evt);
@@ -140,6 +160,7 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
         jLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel.setText("Add Current Stock");
 
+        jButton1.setBackground(new java.awt.Color(255, 102, 102));
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton1.setText("Cancel");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -161,9 +182,9 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
                             .addGap(6, 6, 6)
                             .addComponent(jText_quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton_Add_Inventory, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton_Add_Inventory, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(6, 6, 6)
@@ -211,89 +232,181 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_Add_InventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Add_InventoryActionPerformed
-        try {
+        if (jComboBox_ItemName.getSelectedIndex() > 0) {
+
             // TODO add your handling code here:
-            
-            String voucherId =jCombo_Voucher_id.getSelectedItem().toString();
+            String voucherId = jCombo_Voucher_id.getSelectedItem().toString();
             String itemName = jComboBox_ItemName.getSelectedItem().toString();
-            String relevantItemId = ItemController.getRelevantItemId(itemName);
-            stockId=voucherId+""+relevantItemId;
-            
-            
-           
-            String quantity =jText_quantity.getText();
-            int q =Integer.parseInt(quantity);
-            System.out.println(q);
-            
-            
-            boolean checkAddRow = OnHandQuantityContrller.checkAddRow(relevantItemId);
-             
-            if(checkAddRow){
-                ResultSet checkRow = OnHandQuantityContrller.checkRow(relevantItemId);
-                if(checkRow.last()){
-                    String s = checkRow.getString(2);
-                    newQuantity= Integer.parseInt(s);
-                    System.out.println(newQuantity);
-                    quan = q+newQuantity;
-                    System.out.println(quan);
-                    OnHandQuantity handQ=new OnHandQuantity(relevantItemId, quan);
-                    boolean updateRow = OnHandQuantityContrller.updateRow(handQ);
-                    
-                }else{
-                    
+            String relevantItemId = null;
+            try {
+                relevantItemId = ItemController.getRelevantItemId(itemName);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            stockId = voucherId + "" + relevantItemId;
+
+            String quantity = jText_quantity.getText();
+            if (!voucherId.equals("") && !itemName.equals("") && !quantity.equals("")) {
+                
+                    int q = Integer.parseInt(quantity);
+                    // System.out.println(q);
+
+                    boolean checkAddRow = false;
+                try {
+                    checkAddRow = OnHandQuantityContrller.checkAddRow(relevantItemId);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
+                    if (checkAddRow) {
+                        ResultSet checkRow = null;
+                        try {
+                            checkRow = OnHandQuantityContrller.checkRow(relevantItemId);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        try {
+                            if (checkRow.last()) {
+                                String s = checkRow.getString(2);
+                                newQuantity = Integer.parseInt(s);
+                                //System.out.println(newQuantity);
+                                quan = q + newQuantity;
+                                System.out.println(quan);
+                                OnHandQuantity handQ = new OnHandQuantity(relevantItemId, quan);
+                                try {
+                                    boolean updateRow = OnHandQuantityContrller.updateRow(handQ);
+                                } catch (ClassNotFoundException ex) {
+                                    Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
+                            } else {
+                                
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
+                        OnHandQuantity handQuanad = new OnHandQuantity(relevantItemId, q);
+
+                        try {
+                            OnHandQuantityContrller.addRow(handQuanad);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                    CurrentStock cs = new CurrentStock(stockId, voucherId, relevantItemId, q);
+                    boolean addCurrentStock = false;
+                try {
+                    addCurrentStock = CurrentStockContrller.addCurrentStock(cs);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    if (addCurrentStock) {
+                        try {
+                            loadDataToItem();
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        jText_quantity.setText("");
+                        JOptionPane.showMessageDialog(this, "Stock added successfully");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error in adding stock");
+                    }
+
                 
-                 
+
             }else{
-                OnHandQuantity handQuanad=new OnHandQuantity(relevantItemId, q);
-                
-                OnHandQuantityContrller.addRow(handQuanad);
+                JOptionPane.showMessageDialog(null, "Please check fields again", "Warnning", JOptionPane.WARNING_MESSAGE);
             }
-            
-            
-            CurrentStock cs = new CurrentStock(stockId, voucherId, relevantItemId,q);
-            boolean addCurrentStock = CurrentStockContrller.addCurrentStock(cs);
-            if(addCurrentStock){
-                //loadDataToItem();
-                jText_quantity.setText("");
-                JOptionPane.showMessageDialog(this, "Stock added successfully");
-            }else{
-                JOptionPane.showMessageDialog(this, "Error in adding stock");
-            }
-            
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(AddCurrentStock.class.getName()).log(Level.SEVERE, null, ex);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a equipment name", "Warnning", JOptionPane.WARNING_MESSAGE);
         }
- 
+
 
     }//GEN-LAST:event_jButton_Add_InventoryActionPerformed
 
     private void jCombo_Voucher_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCombo_Voucher_idActionPerformed
-       
-        
+
+
     }//GEN-LAST:event_jCombo_Voucher_idActionPerformed
 
     private void jComboBox_ItemNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_ItemNameActionPerformed
-        
-        
-        
+
+
     }//GEN-LAST:event_jComboBox_ItemNameActionPerformed
 
     private void jCombo_Voucher_idFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jCombo_Voucher_idFocusLost
-        
-       
+
+
     }//GEN-LAST:event_jCombo_Voucher_idFocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        addInventory.acs = null;
+
         aThis.getjPanel_Manage_Inventory().setVisible(true);
+
         this.setVisible(false);
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jText_quantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jText_quantityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jText_quantityActionPerformed
+
+    private void jText_quantityKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_quantityKeyPressed
+        // TODO add your handling code here:
+        setNumericOnly(jText_quantity);
+
+    }//GEN-LAST:event_jText_quantityKeyPressed
+
+    private void jText_quantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_quantityKeyTyped
+        // TODO add your handling code here:
+        checkCharacter(jText_quantity);
+    }//GEN-LAST:event_jText_quantityKeyTyped
+    public static void setNumericOnly(JTextField jTextField) {
+        jTextField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+
+                if ((!Character.isDigit(c)
+                        || (c == KeyEvent.VK_BACK_SPACE)
+                        || (c == KeyEvent.VK_DELETE))) {
+                    e.consume();
+                }
+            }
+        });
+    }
+
+    public static void checkCharacter(JTextField jTextField) {
+
+        jTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (jTextField.getText().length() >= 4) // limit textfield to 3 characters
+                {
+                    e.consume();
+                }
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -307,5 +420,18 @@ public void loadDataToItem() throws ClassNotFoundException, SQLException{
     private javax.swing.JTextField jText_quantity;
     // End of variables declaration//GEN-END:variables
 
-    
+    /**
+     * @return the vId
+     */
+    public String getvId() {
+        return vId;
+    }
+
+    /**
+     * @param vId the vId to set
+     */
+    public void setvId(String vId) {
+        this.vId = vId;
+    }
+
 }

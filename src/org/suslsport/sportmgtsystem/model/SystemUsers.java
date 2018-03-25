@@ -10,6 +10,7 @@ package org.suslsport.sportmgtsystem.model;
  * @author RedHunter
  */
 public class SystemUsers {
+
     private String fullName;
     private String userName;
     private String password;
@@ -22,12 +23,14 @@ public class SystemUsers {
         this.userName = userName;
         this.password = password;
     }
-       public SystemUsers(String fullName, String userName) {
-        this.fullName = fullName;
+
+  
+
+    public SystemUsers(String userName, String password) {
+
         this.userName = userName;
-        
+        this.password = password;
     }
-    
 
     /**
      * @return the fullName
@@ -70,7 +73,5 @@ public class SystemUsers {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    
-    
+
 }

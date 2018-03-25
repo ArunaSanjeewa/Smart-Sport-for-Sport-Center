@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.suslsport.sportmgtsystem.controller.ItemController;
 import org.suslsport.sportmgtsystem.controller.OutFromStockController;
@@ -29,12 +30,13 @@ Main aThis = null;
         this.aThis = aThis;
         try {
             DefaultTableModel  dtm = (DefaultTableModel) jTable_allOutTrheds.getModel();
+            dtm.setRowCount(0);
             
             ArrayList<OutFromStock> viewAllOutThreds = OutFromStockController.viewAllOutThreds();
             
             for (OutFromStock viewAllOutThred : viewAllOutThreds) {
                 boolean outType = viewAllOutThred.isOutType();
-                Object [] b = {viewAllOutThred.getDate(),viewAllOutThred.getStudentId(),viewAllOutThred.getContact(),ItemController.getReleventItemName(viewAllOutThred.getItemId()),viewAllOutThred.getQuantity(),viewAllOutThred.getOutedBy()};
+                Object [] b = {viewAllOutThred.getDate(),viewAllOutThred.getStudentId(),viewAllOutThred.getContact(),ItemController.getReleventItemName(viewAllOutThred.getItemId()),viewAllOutThred.getQuantity()};
                 if (outType) {
                     dtm.addRow(b);
                     jTable_allOutTrheds.setGridColor(Color.red);
@@ -46,11 +48,15 @@ Main aThis = null;
                  
             }
         } catch (SQLException ex) {
-            Logger.getLogger(AllOutThreds.class.getName()).log(Level.SEVERE, null, ex);
+            String message = ex.getMessage();
+            JOptionPane.showMessageDialog(null,message,"Warning", JOptionPane.WARNING_MESSAGE);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AllOutThreds.class.getName()).log(Level.SEVERE, null, ex);
+            String message = ex.getMessage();
+            JOptionPane.showMessageDialog(null,message,"Warning", JOptionPane.WARNING_MESSAGE);
         }
     }
+
+ 
 
  
  
@@ -77,7 +83,7 @@ Main aThis = null;
 
             },
             new String [] {
-                "Date", "Student Reg No", "Contact No", "Item Name", "Quantity", "Outed By"
+                "Date", "Student Reg No", "Contact No", "Item Name", "Quantity"
             }
         ));
         jTable_allOutTrheds.setRowHeight(20);
@@ -100,14 +106,16 @@ Main aThis = null;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton_back, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(188, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 989, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(183, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton_back, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 178, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 989, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(183, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,6 +135,7 @@ Main aThis = null;
 
     private void jButton_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_backActionPerformed
         // TODO add your handling code here:
+        aThis.allOutThreds = null;
       aThis.getjPanel_Invoices().setVisible(true);
       this.setVisible(false);
     }//GEN-LAST:event_jButton_backActionPerformed

@@ -5,6 +5,7 @@
  */
 package smart_sport;
 
+import org.suslsport.sportmgtsystem.view.LoginPanel;
 import org.suslsport.sportmgtsystem.view.Main;
 
 /**
@@ -19,12 +20,15 @@ public class RunSmartSport extends javax.swing.JFrame {
     public RunSmartSport() {
         initComponents();
         this.setTitle("Smart - Sport Management System");
-        Main mainPanel = new Main();        
-        mainPanel.setSize(1360,680);
-        this.add(mainPanel);
+        
+       
+        Main m = new Main();
+        m.getjButton_logout().setVisible(false);
+        m.setSize(1360,680);
+        this.add(m);
        this.pack();
         
-        mainPanel.setVisible(true);
+        m.setVisible(true);
     }
 
     /**

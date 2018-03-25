@@ -12,18 +12,26 @@ package org.suslsport.sportmgtsystem.model;
 public class RemoveDamage {
     private String stockId;
     private String date;
+    private String itemId;
     private int quantity;
-    private String description;
+    
 
     public RemoveDamage() {
     }
 
-    public RemoveDamage(String stockId, String date, int quantity, String description) {
+    public RemoveDamage(String stockId, String date, String itemId, int quantity) {
         this.stockId = stockId;
         this.date = date;
+        this.itemId = itemId;
         this.quantity = quantity;
-        this.description = description;
     }
+   public RemoveDamage(String date, String itemId, int quantity) {
+        
+        this.date = date;
+        this.itemId = itemId;
+        this.quantity = quantity;
+    }
+
 
     /**
      * @return the stockId
@@ -68,18 +76,23 @@ public class RemoveDamage {
     }
 
     /**
-     * @return the description
+     * @return the itemId
      */
-    public String getDescription() {
-        return description;
+    public String getItemId() {
+        return itemId;
     }
 
     /**
-     * @param description the description to set
+     * @param itemId the itemId to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
+
+    /**
+     * @return the description
+     */
+ 
     
     
 }

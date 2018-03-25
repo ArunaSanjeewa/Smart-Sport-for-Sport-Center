@@ -95,7 +95,7 @@ Main aThis =null;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+        aThis.allSportView = null;
         aThis.getjPanel_Manage_Sport().setVisible(true);
       this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed

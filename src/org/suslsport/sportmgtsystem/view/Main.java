@@ -8,61 +8,52 @@ package org.suslsport.sportmgtsystem.view;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import org.suslsport.sportmgtsystem.ThirdPartyFn.ImageTest;
 
 /**
  *
  * @author RedHunter
  */
 public class Main extends javax.swing.JPanel {
-    
-    SystemUserView systemUserView =null;
-    SystemUser systemUser =null;
-    AllSportView  allSportView =null;
-    AddSportView  addSportView = null;
+
+    AllDamageReport allDamage = null;
+    RemoveDamageView damage = null;
+    SystemUserView systemUserView = null;
+    SystemUser systemUser = null;
+    AllSportView allSportView = null;
+    AddSportView addSportView = null;
     AllItemVIew allItemVIew = null;
     AddItemsView addItemsView = null;
     AllVoucher allVoucher = null;
-    AddInventory  addInventory =null;
-    NeedToReturnInvoices needToReturn =null;
+    AddInventory addInventory = null;
+    NeedToReturnInvoices needToReturn = null;
     OutFromStockView outFromStockView = null;
     AllOutThreds allOutThreds = null;
-    AddOnHandQuantity addOnHandQuantity =null;
-    OnHandItemView  handItemView =null;
-     AllOnHandViewAccordingToSports accordingToSports =null;
+    AddOnHandQuantity addOnHandQuantity = null;
+    OnHandItemView handItemView = null;
+    AllOnHandViewAccordingToSports accordingToSports = null;
+    LoginPanel loginPanel = null;
 
     /**
      * Creates new form Main
      */
     public Main() {
         initComponents();
+
+        if (loginPanel == null) {
+            loginPanel = new LoginPanel(this);
+        }
+        jPanel_center.add(loginPanel);
+
+        loginPanel.setSize(1360, 610);
+        loginPanel.setVisible(true);
         
-//        jPanel_top.setSize(1360, 50);
-//        jPanel_center.setSize(1360, 550);
-//        jPanel_bottom.setSize(1360,20);
-//        
-//        
-//        
-//        jPanel_top.setLocation(0, 0);
-//        this.add(jPanel_top);
-//        jPanel_top.setVisible(true);
-//        
-//        jPanel_center.setLocation(0,55);
-//        
-//        this.add(jPanel_center);
-//        jPanel_center.setVisible(true);
-//        
-//        jPanel_bottom.setLocation(0, 0);
-//        this.add(jPanel_bottom);
-//        jPanel_bottom.setVisible(true);
-//        
-       jPanel_center.add(jPanel_mainButton);
-       jPanel_center.setVisible(true);
-       
-        
-       jPanel_mainButton.setSize(1360,610);
-       jPanel_mainButton.setVisible(true);
-      
+
     }
 
     /**
@@ -75,13 +66,14 @@ public class Main extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel_mainButton = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        jButton_Issue_equipments = new javax.swing.JButton();
         jButton_Onhand_quantity = new javax.swing.JButton();
         jButton_manageInventory = new javax.swing.JButton();
         jButton_main_Invoices = new javax.swing.JButton();
         jButton_main_manage_eq = new javax.swing.JButton();
         jButton_main_manage_sport = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        jButton_main_System_users = new javax.swing.JButton();
+        jButton_main_Remove_Damage = new javax.swing.JButton();
         jPanel_Invoices = new javax.swing.JPanel();
         jButton_back_I = new javax.swing.JButton();
         jButton_allInvoices = new javax.swing.JButton();
@@ -106,15 +98,21 @@ public class Main extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         jButton_add_new_user = new javax.swing.JButton();
         jButton_All_user = new javax.swing.JButton();
+        jPanel_Remove_Damage = new javax.swing.JPanel();
+        jButton_Back = new javax.swing.JButton();
+        jButton_Report_damage = new javax.swing.JButton();
+        jButton_all_damage_report = new javax.swing.JButton();
         jPanel_top = new javax.swing.JPanel();
+        jLabel_username_view = new javax.swing.JLabel();
+        jButton_logout = new javax.swing.JButton();
         jPanel_center = new javax.swing.JPanel();
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton1.setText("Out Sport Equipments");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Issue_equipments.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton_Issue_equipments.setText("Issue Sport Equipments");
+        jButton_Issue_equipments.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_Issue_equipments.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton_Issue_equipmentsActionPerformed(evt);
             }
         });
 
@@ -163,12 +161,21 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
-        jButton7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton7.setText("System Users");
-        jButton7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        jButton_main_System_users.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton_main_System_users.setText("System Users");
+        jButton_main_System_users.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_main_System_users.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                jButton_main_System_usersActionPerformed(evt);
+            }
+        });
+
+        jButton_main_Remove_Damage.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton_main_Remove_Damage.setText("Remove Damages");
+        jButton_main_Remove_Damage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_main_Remove_Damage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_main_Remove_DamageActionPerformed(evt);
             }
         });
 
@@ -177,48 +184,50 @@ public class Main extends javax.swing.JPanel {
         jPanel_mainButtonLayout.setHorizontalGroup(
             jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_mainButtonLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel_mainButtonLayout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 632, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton_main_Invoices, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_mainButtonLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton_Onhand_quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton_manageInventory)
-                        .addGap(27, 27, 27)
-                        .addComponent(jButton_main_manage_eq)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton_main_manage_sport, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGap(62, 62, 62)
+                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton_Issue_equipments, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Onhand_quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton_main_Invoices, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_manage_eq, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton_main_Remove_Damage, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_manage_sport, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton_manageInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                    .addComponent(jButton_main_System_users, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE))
+                .addContainerGap(483, Short.MAX_VALUE))
         );
 
-        jPanel_mainButtonLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton7, jButton_Onhand_quantity, jButton_main_manage_eq, jButton_main_manage_sport, jButton_manageInventory});
+        jPanel_mainButtonLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton_Issue_equipments, jButton_Onhand_quantity, jButton_main_Invoices, jButton_main_Remove_Damage, jButton_main_System_users, jButton_main_manage_eq, jButton_main_manage_sport, jButton_manageInventory});
 
         jPanel_mainButtonLayout.setVerticalGroup(
             jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_mainButtonLayout.createSequentialGroup()
-                .addGap(119, 119, 119)
-                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton_main_Invoices, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
+                .addGap(55, 55, 55)
+                .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButton_Issue_equipments, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_Invoices, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_Remove_Damage, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_manageInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
                 .addGroup(jPanel_mainButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_Onhand_quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_manageInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_main_manage_eq)
-                    .addComponent(jButton_main_manage_sport)
-                    .addComponent(jButton7))
-                .addContainerGap(33, Short.MAX_VALUE))
+                    .addComponent(jButton_Onhand_quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_manage_eq, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_manage_sport, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_main_System_users, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
 
-        jPanel_mainButtonLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton7, jButton_Onhand_quantity, jButton_main_manage_eq, jButton_main_manage_sport, jButton_manageInventory});
+        jPanel_mainButtonLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton_Onhand_quantity, jButton_main_System_users, jButton_main_manage_eq, jButton_main_manage_sport});
 
+        jPanel_mainButtonLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton_main_Invoices, jButton_main_Remove_Damage});
+
+        jButton_back_I.setBackground(new java.awt.Color(255, 255, 255));
         jButton_back_I.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton_back_I.setText("Back");
         jButton_back_I.setBorder(null);
@@ -229,6 +238,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_allInvoices.setBackground(new java.awt.Color(255, 255, 255));
         jButton_allInvoices.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_allInvoices.setText("All Invoices");
         jButton_allInvoices.setBorder(null);
@@ -239,6 +249,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_needToReturn.setBackground(new java.awt.Color(255, 255, 255));
         jButton_needToReturn.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_needToReturn.setText("Need To Return");
         jButton_needToReturn.setBorder(null);
@@ -278,6 +289,7 @@ public class Main extends javax.swing.JPanel {
 
         jPanel_onhandQuantity.setPreferredSize(new java.awt.Dimension(1360, 610));
 
+        jButton_addOnHandItem.setBackground(new java.awt.Color(255, 255, 255));
         jButton_addOnHandItem.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_addOnHandItem.setText("Add On Hand Items");
         jButton_addOnHandItem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -287,6 +299,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_AllOnHandQuantity.setBackground(new java.awt.Color(255, 255, 255));
         jButton_AllOnHandQuantity.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_AllOnHandQuantity.setText("All On Hand Quantity");
         jButton_AllOnHandQuantity.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -296,6 +309,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButtonBack.setBackground(new java.awt.Color(255, 255, 255));
         jButtonBack.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButtonBack.setText("Back");
         jButtonBack.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -334,6 +348,7 @@ public class Main extends javax.swing.JPanel {
 
         jPanel_Manage_Inventory.setPreferredSize(new java.awt.Dimension(1360, 610));
 
+        jButton_Add_Inventory.setBackground(new java.awt.Color(255, 255, 255));
         jButton_Add_Inventory.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_Add_Inventory.setText("Add Voucher");
         jButton_Add_Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -343,6 +358,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_View_Inventory.setBackground(new java.awt.Color(255, 255, 255));
         jButton_View_Inventory.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_View_Inventory.setText("All Received Voucher");
         jButton_View_Inventory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -352,6 +368,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton10.setBackground(new java.awt.Color(255, 255, 255));
         jButton10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton10.setText("Back");
         jButton10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -391,6 +408,7 @@ public class Main extends javax.swing.JPanel {
 
         jPanel_Manage_Sport_Eq.setPreferredSize(new java.awt.Dimension(1360, 610));
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton3.setText("Back");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -400,6 +418,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_add_new_equ.setBackground(new java.awt.Color(255, 255, 255));
         jButton_add_new_equ.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_add_new_equ.setText("Add New Equipments");
         jButton_add_new_equ.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -409,6 +428,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_view_all_equ.setBackground(new java.awt.Color(255, 255, 255));
         jButton_view_all_equ.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_view_all_equ.setText("View All Equpments");
         jButton_view_all_equ.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -448,6 +468,7 @@ public class Main extends javax.swing.JPanel {
 
         jPanel_Manage_Sport.setPreferredSize(new java.awt.Dimension(1360, 610));
 
+        jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton2.setText("Back");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -457,6 +478,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_add_sport.setBackground(new java.awt.Color(255, 255, 255));
         jButton_add_sport.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_add_sport.setText("Add New Sport");
         jButton_add_sport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -466,6 +488,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_View_all_sport.setBackground(new java.awt.Color(255, 255, 255));
         jButton_View_all_sport.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_View_all_sport.setText("View All Sports");
         jButton_View_all_sport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -505,6 +528,7 @@ public class Main extends javax.swing.JPanel {
 
         jPanel_Sys_user.setPreferredSize(new java.awt.Dimension(1360, 610));
 
+        jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton4.setText("Back");
         jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -514,6 +538,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_add_new_user.setBackground(new java.awt.Color(255, 255, 255));
         jButton_add_new_user.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_add_new_user.setText("Add New System User");
         jButton_add_new_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -523,6 +548,7 @@ public class Main extends javax.swing.JPanel {
             }
         });
 
+        jButton_All_user.setBackground(new java.awt.Color(255, 255, 255));
         jButton_All_user.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton_All_user.setText("View All Users");
         jButton_All_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -560,33 +586,114 @@ public class Main extends javax.swing.JPanel {
                 .addContainerGap(249, Short.MAX_VALUE))
         );
 
-        setBackground(new java.awt.Color(0, 0, 0));
-        setMaximumSize(new java.awt.Dimension(1360, 680));
-        setPreferredSize(new java.awt.Dimension(1360, 680));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jButton_Back.setBackground(new java.awt.Color(255, 255, 255));
+        jButton_Back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton_Back.setText("Back");
+        jButton_Back.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_BackActionPerformed(evt);
+            }
+        });
+
+        jButton_Report_damage.setBackground(new java.awt.Color(255, 255, 255));
+        jButton_Report_damage.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButton_Report_damage.setText("Report a Damage");
+        jButton_Report_damage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_Report_damage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_Report_damageActionPerformed(evt);
+            }
+        });
+
+        jButton_all_damage_report.setBackground(new java.awt.Color(255, 255, 255));
+        jButton_all_damage_report.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jButton_all_damage_report.setText("All Damage Records");
+        jButton_all_damage_report.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_all_damage_report.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_all_damage_reportActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel_Remove_DamageLayout = new javax.swing.GroupLayout(jPanel_Remove_Damage);
+        jPanel_Remove_Damage.setLayout(jPanel_Remove_DamageLayout);
+        jPanel_Remove_DamageLayout.setHorizontalGroup(
+            jPanel_Remove_DamageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_Remove_DamageLayout.createSequentialGroup()
+                .addGroup(jPanel_Remove_DamageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_Remove_DamageLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton_Back, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel_Remove_DamageLayout.createSequentialGroup()
+                        .addContainerGap(182, Short.MAX_VALUE)
+                        .addComponent(jButton_Report_damage, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(100, 100, 100)
+                        .addComponent(jButton_all_damage_report, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(178, Short.MAX_VALUE))
+        );
+        jPanel_Remove_DamageLayout.setVerticalGroup(
+            jPanel_Remove_DamageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_Remove_DamageLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton_Back, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(161, 161, 161)
+                .addGroup(jPanel_Remove_DamageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_Report_damage, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_all_damage_report, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(208, Short.MAX_VALUE))
+        );
+
+        jPanel_top.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel_username_view.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel_username_view.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        jButton_logout.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton_logout.setText("Logout");
+        jButton_logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_logoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel_topLayout = new javax.swing.GroupLayout(jPanel_top);
         jPanel_top.setLayout(jPanel_topLayout);
         jPanel_topLayout.setHorizontalGroup(
             jPanel_topLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_topLayout.createSequentialGroup()
+                .addContainerGap(1099, Short.MAX_VALUE)
+                .addComponent(jLabel_username_view, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton_logout)
+                .addContainerGap())
         );
         jPanel_topLayout.setVerticalGroup(
             jPanel_topLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_topLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel_topLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel_topLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton_logout))
+                    .addComponent(jLabel_username_view, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        add(jPanel_top, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1360, 40));
+        setBackground(new java.awt.Color(76, 76, 76));
+        setMaximumSize(new java.awt.Dimension(1360, 680));
+        setPreferredSize(new java.awt.Dimension(1360, 680));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         javax.swing.GroupLayout jPanel_centerLayout = new javax.swing.GroupLayout(jPanel_center);
         jPanel_center.setLayout(jPanel_centerLayout);
         jPanel_centerLayout.setHorizontalGroup(
             jPanel_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1360, Short.MAX_VALUE)
         );
         jPanel_centerLayout.setVerticalGroup(
             jPanel_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 610, Short.MAX_VALUE)
         );
 
         add(jPanel_center, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 1360, 610));
@@ -594,37 +701,43 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_main_manage_sportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_main_manage_sportActionPerformed
         // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_Manage_Sport, icon);
         getjPanel_Manage_Sport().setSize(1360, 610);
         getjPanel_center().add(getjPanel_Manage_Sport());
         getjPanel_Manage_Sport().setVisible(true);
         getjPanel_mainButton().setVisible(false);
     }//GEN-LAST:event_jButton_main_manage_sportActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(null==outFromStockView){
+    private void jButton_Issue_equipmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Issue_equipmentsActionPerformed
+        if (null == outFromStockView) {
             outFromStockView = new OutFromStockView(this);
         }
+       
         outFromStockView.setSize(1360, 610);
         outFromStockView.setLocation(0, 0);
-       
+
         getjPanel_center().add(outFromStockView);
+         
         outFromStockView.setVisible(true);
         getjPanel_mainButton().setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton_Issue_equipmentsActionPerformed
 
     private void jButton_main_InvoicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_main_InvoicesActionPerformed
         // TODO add your handling code here:
         getjPanel_Invoices().setSize(1360, 610);
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_Invoices, icon);
         getjPanel_center().add(getjPanel_Invoices());
         getjPanel_Invoices().setVisible(true);
         getjPanel_mainButton().setVisible(false);
-        
-        
+
+
     }//GEN-LAST:event_jButton_main_InvoicesActionPerformed
 
     private void jButton_back_IActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_back_IActionPerformed
         // TODO add your handling code here:
-        
+
         jPanel_mainButton.setSize(1360, 610);
         jPanel_mainButton.setVisible(true);
         jPanel_Invoices.setVisible(false);
@@ -632,29 +745,32 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_allInvoicesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_allInvoicesActionPerformed
         // TODO add your handling code here:
-        if(allOutThreds==null){
+        if (allOutThreds == null) {
             allOutThreds = new AllOutThreds(this);
         }
         allOutThreds.setSize(1360, 610);
         getjPanel_center().add(allOutThreds);
         allOutThreds.setVisible(true);
         getjPanel_Invoices().setVisible(false);
-        
-       
-        
+
+
     }//GEN-LAST:event_jButton_allInvoicesActionPerformed
 
     private void jButton_manageInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_manageInventoryActionPerformed
         // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_Manage_Inventory, icon);
         getjPanel_center().add(getjPanel_Manage_Inventory());
         getjPanel_Manage_Inventory().setSize(1360, 610);
         getjPanel_Manage_Inventory().setVisible(true);
         getjPanel_mainButton().setVisible(false);
-        
+
     }//GEN-LAST:event_jButton_manageInventoryActionPerformed
 
     private void jButton_Onhand_quantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Onhand_quantityActionPerformed
         // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_onhandQuantity, icon);
         getjPanel_center().add(getjPanel_onhandQuantity());
         getjPanel_onhandQuantity().setSize(1360, 610);
         getjPanel_onhandQuantity().setVisible(true);
@@ -663,7 +779,7 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_addOnHandItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addOnHandItemActionPerformed
         // TODO add your handling code here:
-        if(addOnHandQuantity==null){
+        if (addOnHandQuantity == null) {
             addOnHandQuantity = new AddOnHandQuantity(this);
         }
         addOnHandQuantity.setSize(1360, 610);
@@ -674,18 +790,19 @@ public class Main extends javax.swing.JPanel {
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         // TODO add your handling code here:
-       jPanel_mainButton.setSize(1360, 610);
+
+        jPanel_mainButton.setSize(1360, 610);
         jPanel_mainButton.setVisible(true);
         jPanel_onhandQuantity.setVisible(false);
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButton_AllOnHandQuantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AllOnHandQuantityActionPerformed
         // TODO add your handling code here:
-        if(handItemView==null) {
+        if (handItemView == null) {
             handItemView = new OnHandItemView(this);
         }
-        if(accordingToSports==null){
-             accordingToSports = new AllOnHandViewAccordingToSports(this);
+        if (accordingToSports == null) {
+            accordingToSports = new AllOnHandViewAccordingToSports(this);
         }
         handItemView.setSize(680, 610);
         accordingToSports.setSize(680, 610);
@@ -700,23 +817,23 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_needToReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_needToReturnActionPerformed
         // TODO add your handling code here:
-        if(null==needToReturn){
-             needToReturn = new NeedToReturnInvoices(this);
-         }
-        needToReturn.setSize(1360,610);
+        if (null == needToReturn) {
+            needToReturn = new NeedToReturnInvoices(this);
+        }
+        needToReturn.setSize(1360, 610);
         needToReturn.setLocation(0, 0);
         getjPanel_center().add(needToReturn);
         needToReturn.setVisible(true);
         getjPanel_Invoices().setVisible(false);
-        
+
     }//GEN-LAST:event_jButton_needToReturnActionPerformed
 
     private void jButton_Add_InventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Add_InventoryActionPerformed
         // TODO add your handling code here:
-        if(null==addInventory){
-             addInventory = new AddInventory(this);
-         }
-        addInventory.setSize(1360,610);
+        if (null == addInventory) {
+            addInventory = new AddInventory(this);
+        }
+        addInventory.setSize(1360, 610);
         addInventory.setLocation(0, 0);
         getjPanel_center().add(addInventory);
         addInventory.setVisible(true);
@@ -725,6 +842,7 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
+
         jPanel_mainButton.setSize(1360, 610);
         jPanel_mainButton.setVisible(true);
         jPanel_Manage_Inventory.setVisible(false);
@@ -732,10 +850,10 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_View_InventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_View_InventoryActionPerformed
         // TODO add your handling code here:
-          if(null==allVoucher){
-             allVoucher = new AllVoucher(this);
-         }
-        allVoucher.setSize(1360,610);
+        if (null == allVoucher) {
+            allVoucher = new AllVoucher(this);
+        }
+        allVoucher.setSize(1360, 610);
         allVoucher.setLocation(0, 0);
         getjPanel_center().add(allVoucher);
         allVoucher.setVisible(true);
@@ -744,7 +862,9 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_main_manage_eqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_main_manage_eqActionPerformed
         // TODO add your handling code here:
-         getjPanel_Manage_Sport_Eq().setSize(1360, 610);
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_Manage_Sport_Eq, icon);
+        getjPanel_Manage_Sport_Eq().setSize(1360, 610);
         getjPanel_center().add(getjPanel_Manage_Sport_Eq());
         getjPanel_Manage_Sport_Eq().setVisible(true);
         getjPanel_mainButton().setVisible(false);
@@ -752,14 +872,15 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-         jPanel_mainButton.setSize(1360, 610);
+
+        jPanel_mainButton.setSize(1360, 610);
         jPanel_mainButton.setVisible(true);
         jPanel_Manage_Sport_Eq.setVisible(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton_add_new_equActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_add_new_equActionPerformed
         // TODO add your handling code here:
-        if(addItemsView==null){
+        if (addItemsView == null) {
             addItemsView = new AddItemsView(this);
         }
         addItemsView.setSize(1360, 610);
@@ -770,10 +891,16 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_view_all_equActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_view_all_equActionPerformed
         // TODO add your handling code here:
-        if(allItemVIew==null){
+        if (allItemVIew == null) {
             allItemVIew = new AllItemVIew(this);
         }
-        allItemVIew.printData();
+        try {
+            allItemVIew.printData();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
         allItemVIew.setSize(1360, 610);
         getjPanel_center().add(allItemVIew);
         allItemVIew.setVisible(true);
@@ -782,7 +909,7 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_add_sportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_add_sportActionPerformed
         // TODO add your handling code here:
-        if(addSportView==null){
+        if (addSportView == null) {
             addSportView = new AddSportView(this);
         }
         addSportView.setSize(1360, 610);
@@ -793,14 +920,15 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         jPanel_mainButton.setSize(1360, 610);
+
+        jPanel_mainButton.setSize(1360, 610);
         jPanel_mainButton.setVisible(true);
         jPanel_Manage_Sport.setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton_View_all_sportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_View_all_sportActionPerformed
         // TODO add your handling code here:
-        if(allSportView==null){
+        if (allSportView == null) {
             allSportView = new AllSportView(this);
         }
         allSportView.printData();
@@ -810,24 +938,27 @@ public class Main extends javax.swing.JPanel {
         getjPanel_Manage_Sport().setVisible(false);
     }//GEN-LAST:event_jButton_View_all_sportActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void jButton_main_System_usersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_main_System_usersActionPerformed
         // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_Sys_user, icon);
         getjPanel_Sys_user().setSize(1360, 610);
         getjPanel_center().add(getjPanel_Sys_user());
         getjPanel_Sys_user().setVisible(true);
         getjPanel_mainButton().setVisible(false);
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_jButton_main_System_usersActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-         jPanel_mainButton.setSize(1360, 610);
+
+        jPanel_mainButton.setSize(1360, 610);
         jPanel_mainButton.setVisible(true);
         jPanel_Sys_user.setVisible(false);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton_add_new_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_add_new_userActionPerformed
         // TODO add your handling code here:
-        if(systemUser==null){
+        if (systemUser == null) {
             systemUser = new SystemUser(this);
         }
         systemUser.setSize(1360, 610);
@@ -838,8 +969,8 @@ public class Main extends javax.swing.JPanel {
 
     private void jButton_All_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_All_userActionPerformed
         // TODO add your handling code here:
-        
-        if(systemUserView==null){
+
+        if (systemUserView == null) {
             systemUserView = new SystemUserView(this);
         }
         systemUserView.setSize(1360, 610);
@@ -848,19 +979,91 @@ public class Main extends javax.swing.JPanel {
         getjPanel_Sys_user().setVisible(false);
     }//GEN-LAST:event_jButton_All_userActionPerformed
 
+    private void jButton_main_Remove_DamageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_main_Remove_DamageActionPerformed
+        // TODO add your handling code here:
+        ImageIcon icon = new ImageIcon("G:\\Java Learning\\Smart_Sport\\src\\images\\front button.jpg");
+        ImageTest.setImage(jPanel_Remove_Damage, icon);
+        getjPanel_center().add(getjPanel_Remove_Damage());
+        getjPanel_Remove_Damage().setSize(1360, 610);
+        getjPanel_Remove_Damage().setVisible(true);
+        getjPanel_mainButton().setVisible(false);
+    }//GEN-LAST:event_jButton_main_Remove_DamageActionPerformed
+
+    private void jButton_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BackActionPerformed
+        // TODO add your handling code here:
+        jPanel_mainButton.setSize(1360, 610);
+        jPanel_mainButton.setVisible(true);
+        jPanel_Remove_Damage.setVisible(false);
+    }//GEN-LAST:event_jButton_BackActionPerformed
+
+    private void jButton_Report_damageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Report_damageActionPerformed
+        // TODO add your handling code here:
+        if (damage == null) {
+            damage = new RemoveDamageView(this);
+        }
+        damage.setSize(1360, 610);
+        getjPanel_center().add(damage);
+        damage.setVisible(true);
+        getjPanel_Remove_Damage().setVisible(false);
+    }//GEN-LAST:event_jButton_Report_damageActionPerformed
+
+    private void jButton_all_damage_reportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_all_damage_reportActionPerformed
+        // TODO add your handling code here:
+        if (allDamage == null) {
+            allDamage = new AllDamageReport(this);
+        }
+        allDamage.setSize(1360, 610);
+        getjPanel_center().add(allDamage);
+        allDamage.setVisible(true);
+        getjPanel_Remove_Damage().setVisible(false);
+
+    }//GEN-LAST:event_jButton_all_damage_reportActionPerformed
+
+    private void jButton_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_logoutActionPerformed
+        // TODO add your handling code here:
+        allDamage = null;
+        damage = null;
+        systemUserView = null;
+        systemUser = null;
+        allSportView = null;
+        addSportView = null;
+        allItemVIew = null;
+        addItemsView = null;
+        allVoucher = null;
+        addInventory = null;
+        needToReturn = null;
+        outFromStockView = null;
+        allOutThreds = null;
+        addOnHandQuantity = null;
+        handItemView = null;
+        accordingToSports = null;
+
+        loginPanel = null;
+        if (loginPanel == null) {
+            loginPanel = new LoginPanel(this);
+        }
+        jPanel_center.removeAll();
+        jPanel_center.add(loginPanel);
+        loginPanel.setSize(1360, 610);
+        loginPanel.setVisible(true);
+        jButton_logout.setVisible(false);
+        jLabel_username_view.setVisible(false);
+    }//GEN-LAST:event_jButton_logoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButton_Add_Inventory;
     private javax.swing.JButton jButton_AllOnHandQuantity;
     private javax.swing.JButton jButton_All_user;
+    private javax.swing.JButton jButton_Back;
+    private javax.swing.JButton jButton_Issue_equipments;
     private javax.swing.JButton jButton_Onhand_quantity;
+    private javax.swing.JButton jButton_Report_damage;
     private javax.swing.JButton jButton_View_Inventory;
     private javax.swing.JButton jButton_View_all_sport;
     private javax.swing.JButton jButton_addOnHandItem;
@@ -868,17 +1071,23 @@ public class Main extends javax.swing.JPanel {
     private javax.swing.JButton jButton_add_new_user;
     private javax.swing.JButton jButton_add_sport;
     private javax.swing.JButton jButton_allInvoices;
+    private javax.swing.JButton jButton_all_damage_report;
     private javax.swing.JButton jButton_back_I;
+    private javax.swing.JButton jButton_logout;
     private javax.swing.JButton jButton_main_Invoices;
+    private javax.swing.JButton jButton_main_Remove_Damage;
+    private javax.swing.JButton jButton_main_System_users;
     private javax.swing.JButton jButton_main_manage_eq;
     private javax.swing.JButton jButton_main_manage_sport;
     private javax.swing.JButton jButton_manageInventory;
     private javax.swing.JButton jButton_needToReturn;
     private javax.swing.JButton jButton_view_all_equ;
+    private javax.swing.JLabel jLabel_username_view;
     private javax.swing.JPanel jPanel_Invoices;
     private javax.swing.JPanel jPanel_Manage_Inventory;
     private javax.swing.JPanel jPanel_Manage_Sport;
     private javax.swing.JPanel jPanel_Manage_Sport_Eq;
+    private javax.swing.JPanel jPanel_Remove_Damage;
     private javax.swing.JPanel jPanel_Sys_user;
     private javax.swing.JPanel jPanel_center;
     private javax.swing.JPanel jPanel_mainButton;
@@ -941,4 +1150,36 @@ public class Main extends javax.swing.JPanel {
     public javax.swing.JPanel getjPanel_Sys_user() {
         return jPanel_Sys_user;
     }
+
+    /**
+     * @return the jPanel_Remove_Damage
+     */
+    public javax.swing.JPanel getjPanel_Remove_Damage() {
+        return jPanel_Remove_Damage;
+    }
+
+    /**
+     * @return the jButton_main_System_users
+     */
+    public javax.swing.JButton getjButton_main_System_users() {
+        return jButton_main_System_users;
+    }
+
+    /**
+     * @return the jLabel_username_view
+     */
+    public javax.swing.JLabel getjLabel_username_view() {
+        return jLabel_username_view;
+    }
+
+    /**
+     * @return the jButton_logout
+     */
+    public javax.swing.JButton getjButton_logout() {
+        return jButton_logout;
+    }
+
+    /**
+     * @param jLabel_username_view the jLabel_username_view to set
+     */
 }

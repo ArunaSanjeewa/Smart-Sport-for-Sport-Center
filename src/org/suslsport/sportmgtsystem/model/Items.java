@@ -10,9 +10,10 @@ package org.suslsport.sportmgtsystem.model;
  * @author RedHunter
  */
 public class Items {
+
     private String itemId;
     private String itemName;
-    
+
     private String sportId;
 
     public Items() {
@@ -21,7 +22,7 @@ public class Items {
     public Items(String itemId, String itemName, String sportId) {
         this.itemId = itemId;
         this.itemName = itemName;
-        
+
         this.sportId = sportId;
     }
 
@@ -56,21 +57,18 @@ public class Items {
     /**
      * @return the description
      */
-  
     /**
      * @return the sportId
      */
-    public String getSportId() {
-        return sportId;
-    }
-
     /**
      * @param sportId the sportId to set
      */
     public void setSportId(String sportId) {
         this.sportId = sportId;
     }
-    
-    
-    
+
+    public String getSportId() {
+        return sportId;
+    }
+
 }
